@@ -78,7 +78,7 @@ export const uploadScore = createAsyncThunk<
   const game_id = selectGameById(state, gameId)?.id;
 
   if (!(user_id && score && game_id)) {
-    dispatch({ type: "games/failUpload" });
+    dispatch(failUpload());
   } else {
     let payload: scorePayload = {
       user_id,
@@ -155,6 +155,9 @@ export const gamesSlice = createSlice({
   },
 });
 
+export const { setCurrentGame, setScore, startGame, finishGame, failUpload } =
+  gamesSlice.actions;
+
 export const selectScore = (state: RootState): number | undefined =>
   state.games.currentGame?.score;
 
@@ -163,5 +166,17 @@ export const {
   selectById: selectGameById,
   selectIds: selectGameIds,
 } = gamesAdapter.getSelectors((state: RootState) => state.games);
+
+export const selectCurrentGameIntro = (
+  state: RootState
+): string | undefined => {
+  let currentGame = state.games.currentGame?.id;
+  if (currentGame) return selectGameById(state, currentGame)?.intro_text;
+};
+
+export const selectCurrentGameEnd = (state: RootState): string | undefined => {
+  let currentGame = state.games.currentGame?.id;
+  if (currentGame) return selectGameById(state, currentGame)?.farewell_text;
+};
 
 export default gamesSlice.reducer;
