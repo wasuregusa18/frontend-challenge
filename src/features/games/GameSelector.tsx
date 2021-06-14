@@ -10,9 +10,11 @@ const name2url = (name: string): string =>
 export function GameSelector() {
   const { status, error, info: userInfo } = useAppSelector(selectUser);
   const games = useAppSelector(selectAllGames);
+
+  // need loading screen until call for user resolved
   return (
     <>
-      <h3>Hello {userInfo.name}</h3>
+      <h3>Hello {userInfo?.name}</h3>
       {games.map((game) => (
         <div>
           <Link to={`game/${name2url(game.name)}/`}>{game.name}</Link>

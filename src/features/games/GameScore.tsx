@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectCurrentGameEnd, selectScore } from "./gamesSlice";
+import { resetGame, selectCurrentGameEnd, selectScore } from "./gamesSlice";
 
 interface GameInfoProps {
   name: string;
@@ -11,18 +11,19 @@ interface GameInfoProps {
 export function GameScore({ name }: GameInfoProps) {
   let endText = useAppSelector(selectCurrentGameEnd);
   let score = useAppSelector(selectScore);
+  let dispatch = useAppDispatch();
 
   return (
     <div>
       <p>{endText}</p>
-      {score ? (
+      {score != null ? (
         <p>Your Score was {score}</p>
       ) : (
-        <p>
-          No Score avaliable
-          <Link to={`/game/${name}/intro`}>play the game</Link>
-        </p>
+        <p>No Score avaliable</p>
       )}
+      <Link to={`intro`} onClick={() => dispatch(resetGame())}>
+        Play Again
+      </Link>
     </div>
   );
 }

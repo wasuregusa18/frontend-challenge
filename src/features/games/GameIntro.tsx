@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectCurrentGameIntro } from "./gamesSlice";
+import { selectCurrentGameIntro, resetGame } from "./gamesSlice";
 
 interface GameInfoProps {
   name: string;
@@ -10,11 +10,13 @@ interface GameInfoProps {
 
 export function GameIntro({ name }: GameInfoProps) {
   let introText = useAppSelector(selectCurrentGameIntro);
+  // let dispatch = useAppDispatch();
+  // dispatch(resetGame());
 
   return (
     <>
       <p>{introText}</p>
-      <Link to={`/game/${name}/play`}>I understand</Link>
+      <Link to={`play`}>I understand</Link>
     </>
   );
 }

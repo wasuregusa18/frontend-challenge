@@ -5,6 +5,12 @@ import App from './App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import {fetchGames} from "./features/games/gamesSlice"
+import {fetchUser} from "./features/user/userSlice"
+
+
+store.dispatch(fetchGames())
+store.dispatch(fetchUser())
 
 ReactDOM.render(
   <React.StrictMode>

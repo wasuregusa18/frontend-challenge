@@ -19,9 +19,10 @@ interface GameSettings {
   audio: boolean;
 }
 
+type gameStatus = "new" | "started" | "finished";
 interface CurrentGameState {
   id: string; //note this is name not id
-  gameStatus: "new" | "started" | "finished";
+  gameStatus: gameStatus;
   score: number | undefined;
   error: string | undefined;
   uploadStatus: "idle" | "uploading" | "successful" | "failed";
@@ -66,16 +67,16 @@ interface scorePayload {
 type scoreEntry = scorePayload & { id: string };
 export const uploadScore = createAsyncThunk<
   scoreEntry | undefined,
-  string,
+  undefined,
   {
     dispatch: AppDispatch;
     state: RootState;
   }
->("games/uploadScore", async (gameId, { getState, dispatch }) => {
+>("games/uploadScore", async (_, { getState, dispatch }) => {
   const state: RootState = getState();
-  const user_id = state.user.info.id;
+  const user_id = state.user?.info?.id;
   const score = selectScore(state);
-  const game_id = selectGameById(state, gameId)?.id;
+  const game_id = selectCurrentGameDatabaseID(state);
 
   if (!(user_id && score && game_id)) {
     dispatch(failUpload());
@@ -109,20 +110,38 @@ export const gamesSlice = createSlice({
     setCurrentGame: (state, action: PayloadAction<string>) => {
       state.currentGame = makeNewGame(action.payload);
     },
-    setScore: (state, action: PayloadAction<number>) => {
-      if (state.currentGame != null) state.currentGame.score = action.payload;
+    incrementScore: (state) => {
+      if (state.currentGame != null) {
+        if (state.currentGame.score) state.currentGame.score += 1;
+        else state.currentGame.score = 1;
+      }
     },
     startGame: (state) => {
-      if (state.currentGame != null) state.currentGame.gameStatus = "started";
+      if (state.currentGame != null) {
+        state.currentGame.gameStatus = "started";
+        state.currentGame.score = 0;
+      }
     },
     finishGame: (state) => {
-      if (state.currentGame != null) state.currentGame.gameStatus = "finished";
+      if (state.currentGame != null) {
+        state.currentGame.gameStatus = "finished";
+      }
+    },
+    resetGame: (state) => {
+      if (state.currentGame != null) {
+        state.currentGame.gameStatus = "new";
+        state.currentGame.score = 0;
+        state.currentGame.uploadStatus = "idle";
+      }
     },
     failUpload: (state) => {
       if (state.currentGame != null) {
         state.currentGame.uploadStatus = "failed";
         state.currentGame.error = "Game_id, User_id or Score is not valid";
       }
+    },
+    toggleAudio: (state) => {
+      state.settings.audio = !state.settings.audio;
     },
   },
   extraReducers: (builder) => {
@@ -155,8 +174,15 @@ export const gamesSlice = createSlice({
   },
 });
 
-export const { setCurrentGame, setScore, startGame, finishGame, failUpload } =
-  gamesSlice.actions;
+export const {
+  setCurrentGame,
+  incrementScore,
+  startGame,
+  finishGame,
+  resetGame,
+  failUpload,
+  toggleAudio,
+} = gamesSlice.actions;
 
 export const selectScore = (state: RootState): number | undefined =>
   state.games.currentGame?.score;
@@ -166,6 +192,13 @@ export const {
   selectById: selectGameById,
   selectIds: selectGameIds,
 } = gamesAdapter.getSelectors((state: RootState) => state.games);
+
+export const selectCurrentGameDatabaseID = (
+  state: RootState
+): string | undefined => {
+  let currentGame = state.games.currentGame?.id;
+  if (currentGame) return selectGameById(state, currentGame)?.id;
+};
 
 export const selectCurrentGameIntro = (
   state: RootState
@@ -177,6 +210,18 @@ export const selectCurrentGameIntro = (
 export const selectCurrentGameEnd = (state: RootState): string | undefined => {
   let currentGame = state.games.currentGame?.id;
   if (currentGame) return selectGameById(state, currentGame)?.farewell_text;
+};
+
+export const selectCurrentGameStatus = (
+  state: RootState
+): gameStatus | undefined => state.games.currentGame?.gameStatus;
+
+export const selectAudioSettings = (state: RootState): boolean =>
+  state.games.settings.audio;
+
+export const selectCurrentGameTime = (state: RootState): number | undefined => {
+  let currentGame = state.games.currentGame?.id;
+  if (currentGame) return selectGameById(state, currentGame)?.time;
 };
 
 export default gamesSlice.reducer;

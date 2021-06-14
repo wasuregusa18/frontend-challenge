@@ -15,7 +15,7 @@ import { GameIntro } from "./GameIntro";
 import { GameScore } from "./GameScore";
 
 // adds some unncessary complexity
-// brittle - assumes game names capitalized
+// brittle - assumes game names capitalized (could make lower before adding to store)
 // but allows users to navigate to game by url
 const url2name = (url: string): string =>
   url.replace(/-/gi, " ").replace(/\b\w/g, (l) => l.toUpperCase());
@@ -38,7 +38,7 @@ export function Game({ name }: GameProps) {
           <GameIntro name={name} />
         </Route>
         <Route path={`/game/${name}/play`}>
-          <GameContent />
+          <GameContent name={name} />
         </Route>
         <Route path={`/game/${name}/score`}>
           <GameScore name={name} />
