@@ -1,32 +1,25 @@
-import { Container, IconButton } from "@material-ui/core";
-
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectAudioSettings, startGame, toggleAudio } from "./gamesSlice";
-import { useCountdown } from "./useCountdown";
+import { IconButton } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import { Button } from "antd";
-import "./StartScreen.css";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import { useAppSelector } from "../../app/hooks";
+import { selectAudioSettings } from "./gamesSlice";
 import { playAudio } from "./helper";
+import { StartCountdown } from "./StartCountdown";
+import "./StartScreen.css";
 
-const countdownFrom = 3;
-
+// startcountdown dispatches the start game when countdown finishes
 export function StartScreen() {
   //   let isAudioOn = useAppSelector(selectAudioSettings);
   let [isStarting, Start] = useState(false);
-  let dispatch = useAppDispatch();
+
+  // to prevent audio playing multiple times
+  let hasBeenClicked = useRef(false);
 
   // audio
   let isAudioOn = useAppSelector(selectAudioSettings);
   const countdown = new Audio("/countdown.mp3");
-
-  const onFinish = useCallback(() => {
-    dispatch(startGame());
-  }, [dispatch]);
-
-  let timeLeft = useCountdown(onFinish, countdownFrom + 1, isStarting);
 
   const hideIfStarting = (
     isStarting ? { visibility: "hidden" } : {}
@@ -38,16 +31,15 @@ export function StartScreen() {
       <IconButton
         onClick={() => {
           Start(true);
-          isAudioOn && playAudio(countdown);
+          isAudioOn && !hasBeenClicked.current && playAudio(countdown);
+          hasBeenClicked.current = true;
         }}
         className={!isStarting ? "start-button" : "start-countdown"}
       >
         {!isStarting ? (
           <PlayArrowIcon className="start-icon" />
         ) : (
-          <div className="start-number">
-            {timeLeft > 1 ? timeLeft - 1 : "Go!"}
-          </div>
+          <StartCountdown isStarting={isStarting} />
         )}
       </IconButton>
       <p style={hideIfStarting} className="start-text">

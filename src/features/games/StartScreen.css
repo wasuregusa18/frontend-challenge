@@ -18,6 +18,8 @@
 }
 .start-countdown {
   border: 2px solid var(--textcolor) !important;
+  animation: pulse 1s infinite;
+  box-shadow: 0 0 0 4em rgba(#fff, 0);
 }
 
 .start-icon {
@@ -57,4 +59,16 @@
   font-size: medium;
   font-weight: bold;
   letter-spacing: 1px;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--textcolor);
+  }
+  70% {
+    box-shadow: 0 0 0 60px var(--bgcolor);
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--bgcolor);
+  }
 }

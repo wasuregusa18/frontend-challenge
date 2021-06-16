@@ -34,7 +34,13 @@ export function GameSelector() {
       <Row justify="center" gutter={[16, 16]} className="games-list">
         {games.length ? (
           games.map((game) => (
-            <Col style={{ textAlign: "center" }} xl={6} span={8}>
+            <Col
+              style={{ textAlign: "center", paddingLeft: "0px" }}
+              xl={6}
+              md={8}
+              lg={8}
+              xs={12}
+            >
               <Link to={`game/${name2url(game.name)}/`}>
                 <Button shape="round" size="large" className="game-button">
                   {game.name}

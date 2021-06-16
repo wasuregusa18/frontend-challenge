@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
 import { Button, Row } from "antd";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "./GameScore.css";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
@@ -23,11 +23,7 @@ export function GameScore({ name }: GameInfoProps) {
   let dispatch = useAppDispatch();
 
   if (gameStatus !== "finished") {
-    return (
-      <div>
-        <Link to={`intro`}>Play The Game</Link>
-      </div>
-    );
+    return <Redirect to="/intro" />;
   }
 
   return (

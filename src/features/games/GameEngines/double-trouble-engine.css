@@ -5,19 +5,32 @@
   font-size: xx-large !important;
   height: 80px !important;
   width: 160px;
+  letter-spacing: 1px;
   /* font-weight: bold; */
 }
 
-.answer-button:hover {
+/* .answer-button:hover {
   border: 1px solid var(--secondarybg);
   background: var(--textcolor);
-  /* color: var(--bgcolor); */
-}
-/* just to overwrite antd defaults */
-.answer-button:focus {
+  font-weight: bold;
+} */
+
+.answer-button:hover {
   border: 1px solid var(--textcolor);
-  background: transparent;
-  /* color: var(--bgcolor); */
+  background: var(--secondarybg);
+  /* font-weight: bold; */
+}
+
+/* just to overwrite antd defaults */
+.answer-button:focus[wasRight="1"] {
+  border: 1px solid green;
+  background: green;
+  color: white !important;
+}
+.answer-button:focus[wasRight="0"] {
+  border: 1px solid red;
+  background: red;
+  color: black !important;
 }
 
 .problem-text {

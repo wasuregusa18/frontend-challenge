@@ -14,6 +14,8 @@
 
 .end-text {
   font-size: small;
+  margin: 0 30px;
+  text-align: center;
 }
 
 .score-text {
@@ -30,6 +32,7 @@
   display: flex;
   justify-content: space-around;
   width: 50%;
+  gap: 10px;
 }
 
 .end-link {
@@ -37,6 +40,8 @@
   background: transparent !important;
   border-color: var(--understandcolor) !important;
   font-weight: bold !important;
+  font-size: large;
+  height: 42px;
 }
 
 .end-link:hover {

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { incrementScore, selectAudioSettings } from "../gamesSlice";
 import { Button, Col, Row } from "antd";
@@ -59,6 +59,7 @@ export default function DoubleTrouble() {
   // here I use to force rerender
   // but useful to give accuracy stat also
   const [numQ, setNumQ] = useState(0);
+  const hasBeenClicked = useRef(false);
 
   // audio
   let isAudioOn = useAppSelector(selectAudioSettings);
@@ -72,20 +73,35 @@ export default function DoubleTrouble() {
   const answer1 = useMemo<problemProps>(() => buildRandomProps(), [numQ]);
   const answer2 = invertRandomProps(answer1);
 
+  // use wasRight data attribute with button focus
+  // to flash success or failure
+  // adds significant complexity
   const checkAnswer = (e: any) => {
+    // prevent multiple clicks
+    if (hasBeenClicked.current) return;
+    hasBeenClicked.current = true;
+
     const answerIndex = colorsText.findIndex((c) => c === e.target.innerText);
     const wasCorrect = answerIndex === problem.rand2;
     if (wasCorrect) {
       dispatch(incrementScore());
       isAudioOn && playAudio(success);
-    } else isAudioOn && playAudio(failure);
-
-    setNumQ((prevVal) => ++prevVal);
-
-    // otherwise clicked button stuck on focus state
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
+      e.target.setAttribute("wasRight", 1);
+    } else {
+      isAudioOn && playAudio(failure);
+      e.target.setAttribute("wasRight", 0);
     }
+
+    setTimeout(() => {
+      // otherwise clicked button stuck on focus state
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      setTimeout(() => {
+        setNumQ((prevVal) => ++prevVal);
+        hasBeenClicked.current = false;
+      }, 100);
+    }, 400);
   };
 
   return (

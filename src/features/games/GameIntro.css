@@ -32,3 +32,11 @@
   text-align: center;
   position: relative;
 }
+
+.intro-loading {
+  height: 35vh;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

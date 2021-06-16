@@ -22,7 +22,13 @@ export function GameIntro({ name }: GameInfoProps) {
     <Container maxWidth="md" className="intro-container">
       <h2 className="instruction-header">Instructions</h2>
       <p className="instruction-text">{introText}</p>
-      <Suspense fallback={<Spin />}>
+      <Suspense
+        fallback={
+          <div className="intro-loading">
+            <Spin />
+          </div>
+        }
+      >
         <GameIntro />
       </Suspense>
       <div className="understand-button-wrapper">
