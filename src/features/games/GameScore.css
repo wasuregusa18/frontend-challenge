@@ -1,0 +1,46 @@
+.end-container {
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.end-thank-you {
+  font: bold;
+  font-size: x-large;
+}
+
+.end-text {
+  font-size: small;
+}
+
+.score-text {
+  color: var(--textcolor);
+  border: 1px solid var(--textcolor);
+  font-size: xx-large;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.links-container {
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+}
+
+.end-link {
+  color: var(--understandcolor) !important;
+  background: transparent !important;
+  border-color: var(--understandcolor) !important;
+  font-weight: bold !important;
+}
+
+.end-link:hover {
+  color: var(--secondarybg) !important;
+  background: var(--understandcolor) !important;
+  border-color: var(--secondarybg) !important;
+}

@@ -3,14 +3,21 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectAudioSettings, toggleAudio } from "./gamesSlice";
 import VolumeUpRoundedIcon from "@material-ui/icons/VolumeUpRounded";
 import VolumeOffRoundedIcon from "@material-ui/icons/VolumeOffRounded";
+import "./Audio.css";
 
 export function Audio() {
   let isAudioOn = useAppSelector(selectAudioSettings);
   let dispatch = useAppDispatch();
 
   return (
-    <div onClick={() => dispatch(toggleAudio())}>
-      {isAudioOn ? <VolumeUpRoundedIcon /> : <VolumeOffRoundedIcon />}
+    <div className="audio-container" onClick={() => dispatch(toggleAudio())}>
+      <div className={isAudioOn ? "icon-wrapper" : "icon-wrapper-off"}>
+        {isAudioOn ? (
+          <VolumeUpRoundedIcon className="audio-icon" />
+        ) : (
+          <VolumeOffRoundedIcon className="audio-icon" />
+        )}
+      </div>
     </div>
   );
 }

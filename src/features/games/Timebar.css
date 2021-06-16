@@ -1,0 +1,30 @@
+.timebar-progress .ant-progress-inner {
+  transform-origin: 0 100%;
+  transform: rotate(90deg);
+  left: calc(50% - 4px);
+  position: absolute;
+  width: 40vh;
+  background-color: var(--textcolor);
+  border: 0.1px solid var(--textcolor);
+}
+
+.timebar-progress .ant-progress-bg {
+  background-color: var(--secondarybg);
+  width: 8px;
+}
+
+/* timebar is 60vh */
+.timebar-title {
+  position: absolute;
+  bottom: 15%;
+  color: var(--textcolor);
+  font-size: small;
+}
+.timebar-score {
+  color: white;
+  position: absolute;
+  bottom: 7%;
+  color: white;
+  font-size: large;
+  font-weight: bold;
+}

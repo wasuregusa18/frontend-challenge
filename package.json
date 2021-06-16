@@ -14,12 +14,14 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.7",
+    "@types/react-sound": "^1.2.2",
     "antd": "^4.16.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-vertical-timeline": "^0.2.0",
     "typescript": "~4.1.5"
   },
   "scripts": {
@@ -44,6 +46,9 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "@types/redux-mock-store": "^1.0.2",
+    "jest-fetch-mock": "^3.0.3",
+    "redux-mock-store": "^1.5.4"
   }
 }

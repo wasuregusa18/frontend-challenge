@@ -1,0 +1,20 @@
+.score-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.score-title {
+  color: var(--textcolor);
+  font-size: small;
+  width: 100%;
+  /* flex-basis: 100%; */
+}
+
+.score-number {
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  /* flex-basis: 100%; */
+}

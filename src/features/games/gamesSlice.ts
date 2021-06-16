@@ -23,7 +23,7 @@ type gameStatus = "new" | "started" | "finished";
 interface CurrentGameState {
   id: string; //note this is name not id
   gameStatus: gameStatus;
-  score: number | undefined;
+  score: number;
   error: string | undefined;
   uploadStatus: "idle" | "uploading" | "successful" | "failed";
 }
@@ -39,7 +39,7 @@ const initialSettings: GameSettings = { audio: true };
 const makeNewGame = (id: string): CurrentGameState => ({
   id,
   gameStatus: "new",
-  score: undefined,
+  score: 0,
   error: undefined,
   uploadStatus: "idle",
 });
@@ -79,7 +79,7 @@ export const uploadScore = createAsyncThunk<
   const game_id = selectCurrentGameDatabaseID(state);
 
   if (!(user_id && score && game_id)) {
-    dispatch(failUpload());
+    throw new Error("Game_id, User_id or Score is not valid");
   } else {
     let payload: scorePayload = {
       user_id,
@@ -134,12 +134,12 @@ export const gamesSlice = createSlice({
         state.currentGame.uploadStatus = "idle";
       }
     },
-    failUpload: (state) => {
-      if (state.currentGame != null) {
-        state.currentGame.uploadStatus = "failed";
-        state.currentGame.error = "Game_id, User_id or Score is not valid";
-      }
-    },
+    // failUpload: (state) => {
+    //   if (state.currentGame != null) {
+    //     state.currentGame.uploadStatus = "failed";
+    //     state.currentGame.error = "Game_id, User_id or Score is not valid";
+    //   }
+    // },
     toggleAudio: (state) => {
       state.settings.audio = !state.settings.audio;
     },
@@ -180,7 +180,7 @@ export const {
   startGame,
   finishGame,
   resetGame,
-  failUpload,
+  // failUpload,
   toggleAudio,
 } = gamesSlice.actions;
 
@@ -192,6 +192,13 @@ export const {
   selectById: selectGameById,
   selectIds: selectGameIds,
 } = gamesAdapter.getSelectors((state: RootState) => state.games);
+
+export const selectCurrentGameInfo = (
+  state: RootState
+): GameInfo | undefined => {
+  let currentGame = state.games.currentGame?.id;
+  if (currentGame) return selectGameById(state, currentGame);
+};
 
 export const selectCurrentGameDatabaseID = (
   state: RootState

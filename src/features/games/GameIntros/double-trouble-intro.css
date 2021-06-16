@@ -1,0 +1,47 @@
+.game-intro * {
+  cursor: default;
+}
+
+.explaination-text {
+  color: var(--textcolor);
+  text-align: center;
+}
+
+.label-line {
+  width: 20px;
+  margin: auto 10px;
+  border-color: var(--textcolor);
+}
+
+.example-button {
+  border: 1px solid var(--textcolor);
+  background: transparent;
+  margin-bottom: 15px;
+  font-size: x-large !important;
+  height: 60px !important;
+  width: 120px;
+}
+/* just to overwrite antd defaults */
+.example-button:hover,
+.example-button:focus,
+.example-button:active {
+  border: 1px solid var(--textcolor);
+  background: transparent;
+}
+
+.fail-badge span.MuiBadge-badge {
+  background-color: var(--bgcolor);
+  color: var(--textcolor);
+  transform: scale(1.5) translate(-50%, 9px);
+  border: 1px solid var(--textcolor);
+  z-index: 100;
+}
+
+.success-badge span.MuiBadge-badge {
+  color: var(--bgcolor);
+  background-color: var(--textcolor);
+  transform: scale(1.5) translate(50%, 9px);
+}
+
+.success-badge {
+}

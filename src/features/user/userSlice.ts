@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-interface UserInfo {
+export interface UserInfo {
   id: string | undefined;
   name: string | undefined;
   email: string | undefined;
@@ -21,7 +21,7 @@ const initialState: UserState = {
 // design decision
 // allow anoynomous users to play games
 // save their records under anoynomous id
-const anoynomousUser: UserInfo = {
+export const anoynomousUser: UserInfo = {
   id: "anoynomous",
   name: "Stranger",
   email: undefined,

@@ -1,0 +1,34 @@
+.intro-container {
+  padding-top: 100px;
+}
+
+.instruction-header {
+  color: white;
+  text-align: center;
+}
+
+.instruction-text {
+  text-align: center;
+  width: 78%;
+  margin: auto;
+}
+
+.understand-button {
+  background: var(--bgcolor);
+  border: 1px solid var(--understandcolor);
+  color: var(--understandcolor);
+}
+
+.understand-button:hover {
+  background: var(--understandcolor);
+  border: 1px solid var(--understandcolor);
+  color: var(--bgcolor);
+}
+.understand-button:hover span {
+  color: var(--bgcolor);
+}
+
+.understand-button-wrapper {
+  text-align: center;
+  position: relative;
+}

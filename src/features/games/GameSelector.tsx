@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectAllGames } from "./gamesSlice";
 import { selectUser } from "../user/userSlice";
 import { Link } from "react-router-dom";
+import { List, Button, Row, Col, Spin, Divider } from "antd";
+import "./GameSelector.css";
 
 const name2url = (name: string): string =>
   name.replace(/ /gi, "-").toLowerCase();
@@ -10,16 +12,40 @@ const name2url = (name: string): string =>
 export function GameSelector() {
   const { status, error, info: userInfo } = useAppSelector(selectUser);
   const games = useAppSelector(selectAllGames);
+  let games2 = [
+    { name: "hello" },
+    { name: "COD" },
+    { name: "morning" },
+    { name: "hello" },
+    { name: "COD" },
+    { name: "morning" },
+  ];
 
-  // need loading screen until call for user resolved
+  const userLoading = status === "loading" || status === "new";
+
   return (
-    <>
-      <h3>Hello {userInfo?.name}</h3>
-      {games.map((game) => (
-        <div>
-          <Link to={`game/${name2url(game.name)}/`}>{game.name}</Link>
-        </div>
-      ))}
-    </>
+    <div className="selector-container">
+      <h3 className="welcome-title">
+        Hello {userLoading ? "..." : userInfo?.name}
+      </h3>
+      <Divider className="selector-divider" />
+      <h4 className="games-header">Games</h4>
+      <br />
+      <Row justify="center" gutter={[16, 16]} className="games-list">
+        {games.length ? (
+          games.map((game) => (
+            <Col style={{ textAlign: "center" }} xl={6} span={8}>
+              <Link to={`game/${name2url(game.name)}/`}>
+                <Button shape="round" size="large" className="game-button">
+                  {game.name}
+                </Button>
+              </Link>
+            </Col>
+          ))
+        ) : (
+          <Spin size="large" />
+        )}
+      </Row>
+    </div>
   );
 }

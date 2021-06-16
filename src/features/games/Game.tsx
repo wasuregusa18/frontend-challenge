@@ -9,10 +9,16 @@ import {
   Redirect,
 } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectGameById, setCurrentGame } from "./gamesSlice";
+import {
+  selectGameById,
+  setCurrentGame,
+  selectCurrentGameInfo,
+} from "./gamesSlice";
 import { GameContent } from "./GameContent";
 import { GameIntro } from "./GameIntro";
 import { GameScore } from "./GameScore";
+import { RootState } from "../../app/store";
+import { Loading } from "./Loading";
 
 // adds some unncessary complexity
 // brittle - assumes game names capitalized (could make lower before adding to store)
@@ -27,26 +33,31 @@ interface GameProps {
 export function Game({ name }: GameProps) {
   const dispatch = useAppDispatch();
   const gameId = url2name(name);
-  const currentGame = useAppSelector((state) => selectGameById(state, gameId));
-  if (!currentGame) return <p>Game Not Found</p>;
-  dispatch(setCurrentGame(gameId));
+  const gamesStatus = useAppSelector((state: RootState) => state.games.status);
+  const currentGameinStore = useAppSelector(selectCurrentGameInfo);
+  const currentGamefromUrl = useAppSelector((state: RootState) =>
+    selectGameById(state, gameId)
+  );
+  if (gamesStatus === "loading") return <Loading />;
+  else if (!currentGamefromUrl) return <Redirect to="/" />;
+  else if (currentGamefromUrl !== currentGameinStore) {
+    dispatch(setCurrentGame(gameId));
+  }
 
   return (
-    <Router>
-      <Switch>
-        <Route path={`/game/${name}/intro`}>
-          <GameIntro name={name} />
-        </Route>
-        <Route path={`/game/${name}/play`}>
-          <GameContent name={name} />
-        </Route>
-        <Route path={`/game/${name}/score`}>
-          <GameScore name={name} />
-        </Route>
-        <Route>
-          <Redirect to={`/game/${name}/intro`} />
-        </Route>
-      </Switch>
-    </Router>
+    <Switch>
+      <Route path={`/game/${name}/intro`}>
+        <GameIntro name={name} />
+      </Route>
+      <Route path={`/game/${name}/play`}>
+        <GameContent name={name} />
+      </Route>
+      <Route path={`/game/${name}/score`}>
+        <GameScore name={name} />
+      </Route>
+      <Route>
+        <Redirect to={`/game/${name}/intro`} />
+      </Route>
+    </Switch>
   );
 }

@@ -1,0 +1,22 @@
+.game-container {
+  height: 100vh;
+}
+
+.timebar-row,
+.score-row,
+.audio-row {
+  box-shadow: var(--bxshadow);
+  background-image: linear-gradient(var(--secondarybg), var(--bgcolor));
+  /* background: var(--secondarybg); */
+}
+
+.timebar-row {
+  height: 60%;
+  position: relative;
+  padding-top: 20px;
+}
+
+.score-row,
+.audio-row {
+  height: 20%;
+}

@@ -1,0 +1,60 @@
+.start-container {
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.start-button,
+.start-countdown {
+  height: 120px;
+  width: 120px;
+}
+
+.start-button {
+  border: 2px solid var(--understandcolor) !important;
+}
+.start-countdown {
+  border: 2px solid var(--textcolor) !important;
+}
+
+.start-icon {
+  font-size: 2.5em !important;
+  color: var(--understandcolor);
+}
+
+.start-number {
+  font-size: 1.7em !important;
+  color: var(--textcolor) !important;
+}
+
+.start-button:hover {
+  background: var(--understandcolor) !important;
+  border: 2px solid var(--secondarybg);
+}
+
+.start-countdown:hover {
+  cursor: default;
+}
+
+.start-button:hover .start-icon {
+  color: var(--bgcolor);
+}
+
+.start-text {
+  margin-top: 10px;
+  color: var(--understandcolor);
+  font-size: 1.5em;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.instruction-link {
+  color: white;
+  text-decoration: underline;
+  font-size: medium;
+  font-weight: bold;
+  letter-spacing: 1px;
+}

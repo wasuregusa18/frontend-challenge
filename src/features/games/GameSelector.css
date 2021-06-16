@@ -1,0 +1,44 @@
+.selector-container {
+  height: 80vh;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.welcome-title {
+  color: white;
+  font-size: large;
+  font-weight: bold;
+}
+
+.games-list {
+  width: 100%;
+}
+
+.game-button {
+  height: 50px;
+  width: 150px;
+  background-color: transparent;
+  border-color: var(--understandcolor);
+  color: var(--understandcolor);
+}
+
+.game-button:hover {
+  background-color: var(--understandcolor);
+  border-color: var(--secondarybg);
+  color: var(--bgcolor);
+}
+
+.selector-divider {
+  border-color: var(--textcolor);
+  width: 75%;
+  min-width: inherit;
+}
+
+.games-header {
+  color: var(--textcolor);
+  font-size: medium;
+  letter-spacing: 1px;
+}

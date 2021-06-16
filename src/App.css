@@ -1,39 +1,24 @@
-.App {
-  text-align: center;
+@import "~antd/dist/antd.css";
+
+:root {
+  --bgcolor: rgb(37, 21, 38);
+  --secondarybg: rgb(45, 27, 47);
+  --textcolor: rgb(197, 137, 219);
+  --understandcolor: rgb(111, 212, 27);
+  --bxshadow: 0px 3px 5px -1px rgb(0 0 0 / 20%),
+    0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background: var(--bgcolor);
+  color: white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-float infinite 3s ease-in-out;
-  }
-}
-
-.App-header {
-  min-height: 100vh;
+/* to center spin */
+.loading-container {
+  height: 100vh;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-}
-
-.App-link {
-  color: rgb(112, 76, 182);
-}
-
-@keyframes App-logo-float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
 }
