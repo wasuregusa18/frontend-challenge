@@ -1,4 +1,5 @@
-.answer-button {
+.answer-button,
+.answer-button:focus {
   border: 1px solid var(--textcolor);
   background: transparent;
   margin-bottom: 15px;
@@ -39,7 +40,8 @@
 }
 
 .feedback-button,
-.feedback-button:hover {
+.feedback-button:hover,
+.feedback-button:focus {
   background: var(--textcolor);
   border: 1px solid var(--secondarybg);
   display: flex;

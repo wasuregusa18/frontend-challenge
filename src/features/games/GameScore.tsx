@@ -35,7 +35,7 @@ export function GameScore({ name }: GameInfoProps) {
       <div className="links-container">
         <Link to="/" onClick={() => dispatch(resetGame())}>
           <Button className="end-link" shape="round">
-            Another Game
+            Home
           </Button>
         </Link>
         <Link to="intro" onClick={() => dispatch(resetGame())}>
