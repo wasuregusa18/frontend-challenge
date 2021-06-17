@@ -14,6 +14,10 @@ const fakeLoadingState: RootState = {
       audio: true,
     },
   },
+  _persist: {
+    version: 1,
+    rehydrated: true,
+  },
 };
 
 const fakeNoCurrentGameState: RootState = {
@@ -45,6 +49,10 @@ const fakeNoCurrentGameState: RootState = {
       audio: true,
     },
   },
+  _persist: {
+    version: 1,
+    rehydrated: true,
+  },
 };
 
 let fakeInitialState: RootState = JSON.parse(
@@ -52,8 +60,9 @@ let fakeInitialState: RootState = JSON.parse(
 );
 fakeInitialState.games.currentGame = {
   id: "Double Trouble",
-  gameStatus: "started",
+  gameStatus: "new",
   score: 0,
+  timeLeft: 120,
   uploadStatus: "idle",
   error: undefined,
 };

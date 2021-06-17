@@ -1,19 +1,24 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
   selectCurrentGameStatus,
   finishGame,
+  updateTime,
   selectCurrentGameTime,
-  uploadScore,
 } from "./gamesSlice";
 import { useCountdown } from "./useCountdown";
 import { Progress } from "antd";
 import "./Timebar.css";
+import { RootState } from "../../app/store";
 
 export function Timebar() {
   // force unpack - because current Game should be set
   let gameStatus = useAppSelector(selectCurrentGameStatus)!;
   let gameTimeLimit = useAppSelector(selectCurrentGameTime)!;
+  let storeTimeLeft = useAppSelector(
+    (store: RootState) => store.games.currentGame?.timeLeft
+  )!;
+  // gameTimeLimit = 10;
   let dispatch = useAppDispatch();
 
   const normalise = (value: number): number => (value * 100) / gameTimeLimit;
@@ -24,7 +29,15 @@ export function Timebar() {
   }, [dispatch]);
   const startCondition = gameStatus === "started";
 
-  let timeLeft = useCountdown(onFinish, gameTimeLimit, startCondition);
+  // update store on dismount
+  const onTick = useCallback(
+    (remainingTime) => {
+      dispatch(updateTime(remainingTime));
+    },
+    [dispatch]
+  );
+
+  let timeLeft = useCountdown(onFinish, storeTimeLeft, startCondition, onTick);
 
   return (
     <>
@@ -33,16 +46,8 @@ export function Timebar() {
         showInfo={false}
         className="timebar-progress"
       />
-
       <h3 className="timebar-title">TIME</h3>
-
       <h3 className="timebar-score">{timeLeft}</h3>
     </>
   );
 }
-
-// this is starting background color - with orientation need to do other way round
-// it has a width of 8px so need to push 4 back
-
-//
-// background-color: this is ending background color

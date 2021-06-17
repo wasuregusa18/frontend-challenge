@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense } from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
@@ -17,6 +17,7 @@ interface GameInfoProps {
 export function GameIntro({ name }: GameInfoProps) {
   let introText = useAppSelector(selectCurrentGameIntro);
   let GameIntro = renderGameIntro(name);
+  let dispatch = useAppDispatch();
 
   return (
     <Container maxWidth="md" className="intro-container">
@@ -33,7 +34,14 @@ export function GameIntro({ name }: GameInfoProps) {
       </Suspense>
       <div className="understand-button-wrapper">
         <Link to={`play`}>
-          <Button size="large" shape="round" className="understand-button">
+          <Button
+            size="large"
+            shape="round"
+            className="understand-button"
+            onClick={() => {
+              dispatch(resetGame());
+            }}
+          >
             I understand
           </Button>
         </Link>

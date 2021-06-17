@@ -14,7 +14,7 @@ test("setCurrentGame test", () => {
   const currentGame = state?.currentGame;
   expect(currentGame).toBeFalsy(); //starts undefined
 
-  const newGame = makeNewGame("1");
+  const newGame = makeNewGame("1", 120);
   store.dispatch(setCurrentGame("1"));
   state = store.getState().games;
   const newCurrentGame = state?.currentGame;

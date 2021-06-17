@@ -1,27 +1,20 @@
 import React from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import { selectAllGames } from "./gamesSlice";
 import { selectUser } from "../user/userSlice";
 import { Link } from "react-router-dom";
-import { List, Button, Row, Col, Spin, Divider } from "antd";
+import { Button, Row, Col, Spin, Divider } from "antd";
 import "./GameSelector.css";
+import { useTitle } from "./useTitle";
 
 const name2url = (name: string): string =>
   name.replace(/ /gi, "-").toLowerCase();
 
 export function GameSelector() {
-  const { status, error, info: userInfo } = useAppSelector(selectUser);
+  const { status, info: userInfo } = useAppSelector(selectUser);
   const games = useAppSelector(selectAllGames);
-  let games2 = [
-    { name: "hello" },
-    { name: "COD" },
-    { name: "morning" },
-    { name: "hello" },
-    { name: "COD" },
-    { name: "morning" },
-  ];
-
   const userLoading = status === "loading" || status === "new";
+  useTitle("Games");
 
   return (
     <div className="selector-container">

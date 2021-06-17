@@ -1,0 +1,28 @@
+{
+    "name": "Frontend Challenge",
+    "short_name": "Games",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },        
+        {
+            "src": "/maskable_icon_x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "https://decode-frontend-challenge.netlify.app/",
+    "display": "standalone",
+    "theme_color": "rgb(197, 137, 219)",
+    "background_color": "rgb(37, 21, 38)"
+
+}

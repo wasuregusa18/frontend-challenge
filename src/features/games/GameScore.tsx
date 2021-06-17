@@ -1,7 +1,7 @@
-import { Container } from "@material-ui/core";
-import { Button, Row } from "antd";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, Redirect } from "react-router-dom";
+import { Button } from "antd";
+
 import "./GameScore.css";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
@@ -22,9 +22,9 @@ export function GameScore({ name }: GameInfoProps) {
   let gameStatus = useAppSelector(selectCurrentGameStatus);
   let dispatch = useAppDispatch();
 
-  if (gameStatus !== "finished") {
-    return <Redirect to="/intro" />;
-  }
+  if (gameStatus === "new") {
+    return <Redirect to="intro" />;
+  } else if (gameStatus === "started") return <Redirect to="play" />;
 
   return (
     <div className="end-container">

@@ -19,6 +19,7 @@ import { GameIntro } from "./GameIntro";
 import { GameScore } from "./GameScore";
 import { RootState } from "../../app/store";
 import { Loading } from "./Loading";
+import { useTitle } from "./useTitle";
 
 // adds some unncessary complexity
 // brittle - assumes game names capitalized (could make lower before adding to store)
@@ -38,6 +39,7 @@ export function Game({ name }: GameProps) {
   const currentGamefromUrl = useAppSelector((state: RootState) =>
     selectGameById(state, gameId)
   );
+  useTitle(gameId);
   if (gamesStatus === "loading") return <Loading />;
   else if (!currentGamefromUrl) return <Redirect to="/" />;
   else if (currentGamefromUrl !== currentGameinStore) {

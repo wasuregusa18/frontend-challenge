@@ -20,9 +20,11 @@ interface GameSettings {
 }
 
 type gameStatus = "new" | "started" | "finished";
+
 interface CurrentGameState {
   id: string; //note this is name not id
   gameStatus: gameStatus;
+  timeLeft: number; //necessary with redux-persist; otherwise refresh sets time
   score: number;
   error: string | undefined;
   uploadStatus: "idle" | "uploading" | "successful" | "failed";
@@ -36,10 +38,11 @@ type GamesState = EntityState<GameInfo> & {
 };
 
 const initialSettings: GameSettings = { audio: true };
-export const makeNewGame = (id: string): CurrentGameState => ({
+export const makeNewGame = (id: string, time: number): CurrentGameState => ({
   id,
   gameStatus: "new",
   score: 0,
+  timeLeft: time,
   error: undefined,
   uploadStatus: "idle",
 });
@@ -108,12 +111,22 @@ export const gamesSlice = createSlice({
   initialState,
   reducers: {
     setCurrentGame: (state, action: PayloadAction<string>) => {
-      state.currentGame = makeNewGame(action.payload);
+      const gameId = action.payload;
+      if (gameId in state.entities) {
+        const time = state.entities[gameId]!.time;
+        state.currentGame = makeNewGame(gameId, time);
+      }
     },
     incrementScore: (state) => {
       if (state.currentGame != null) {
         if (state.currentGame.score) state.currentGame.score += 1;
         else state.currentGame.score = 1;
+      }
+    },
+    // dispatch this on timebar dismount
+    updateTime: (state, action: PayloadAction<number>) => {
+      if (state.currentGame != null) {
+        state.currentGame.timeLeft = action.payload;
       }
     },
     startGame: (state) => {
@@ -129,9 +142,11 @@ export const gamesSlice = createSlice({
     },
     resetGame: (state) => {
       if (state.currentGame != null) {
-        state.currentGame.gameStatus = "new";
-        state.currentGame.score = 0;
-        state.currentGame.uploadStatus = "idle";
+        const gameId = state.currentGame.id;
+        if (gameId in state.entities) {
+          const time = state.entities[gameId]!.time;
+          state.currentGame = makeNewGame(gameId, time);
+        }
       }
     },
     toggleAudio: (state) => {
@@ -171,10 +186,10 @@ export const gamesSlice = createSlice({
 export const {
   setCurrentGame,
   incrementScore,
+  updateTime,
   startGame,
   finishGame,
   resetGame,
-  // failUpload,
   toggleAudio,
 } = gamesSlice.actions;
 
