@@ -22,7 +22,7 @@
 }
 
 /* just to overwrite antd defaults */
-.answer-button:focus[wasRight="1"] {
+/* .answer-button:focus[wasRight="1"] {
   border: 1px solid green;
   background: green;
   color: white !important;
@@ -31,9 +31,22 @@
   border: 1px solid red;
   background: red;
   color: black !important;
-}
+} */
 
 .problem-text {
   font-size: xx-large;
   font-weight: bold;
+}
+
+.feedback-button,
+.feedback-button:hover {
+  background: var(--textcolor);
+  border: 1px solid var(--secondarybg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.feedback-icon {
+  font-size: xxx-large !important;
+  color: var(--bgcolor) !important;
 }

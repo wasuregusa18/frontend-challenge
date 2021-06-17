@@ -1,10 +1,10 @@
 import React, { useMemo, useRef, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../../app/hooks";
-import { incrementScore, selectAudioSettings } from "../gamesSlice";
-import { Button, Col, Row } from "antd";
+import { Col, Row } from "antd";
 import "./double-trouble-engine.css";
 import { useUploadOnDismount } from "./useUploadOnDismount";
 import { playAudio } from "../helper";
+import { AnswerButton } from "./AnswerButton";
+import { Problem } from "./Problem";
 
 const BLUE = "rgb(0,116,255)";
 const RED = "rgb(255,0,0)";
@@ -14,7 +14,6 @@ interface problemProps {
   rand1: 0 | 1;
   rand2: 0 | 1;
 }
-type answerProps = problemProps & { checkAnswer: (e: any) => void };
 
 const randOneorTwo = () => (Math.random() >= 0.5 ? 1 : 0);
 const buildRandomProps = (): problemProps => ({
@@ -25,84 +24,57 @@ const invertRandomProps = ({ rand1, rand2 }: problemProps): problemProps => ({
   rand1: ((rand1 + 1) % 2) as 0 | 1,
   rand2: ((rand2 + 1) % 2) as 0 | 1,
 });
-const random2colors = ({ rand1, rand2 }: problemProps) => [
-  colorsText[rand1],
-  colorsRGB[rand2],
-];
-
-const AnswerButton = ({ rand1, rand2, checkAnswer }: answerProps) => {
-  const [text, color] = random2colors({ rand1, rand2 });
-  return (
-    <Button
-      className="answer-button"
-      onClick={checkAnswer}
-      size="large"
-      shape="round"
-      style={{ color: color }}
-    >
-      {text}
-    </Button>
-  );
-};
-
-const Problem = ({ rand1, rand2 }: problemProps) => {
-  const [text, color] = random2colors({ rand1, rand2 });
-  return (
-    <p className="problem-text" style={{ color: color }}>
-      {text}
-    </p>
-  );
-};
-
 export default function DoubleTrouble() {
   useUploadOnDismount();
   // here I use to force rerender
   // but useful to give accuracy stat also
   const [numQ, setNumQ] = useState(0);
+  // prevent double+triple clicking
   const hasBeenClicked = useRef(false);
 
   // audio
-  let isAudioOn = useAppSelector(selectAudioSettings);
+  // let isAudioOn = useAppSelector(selectAudioSettings);
   const success = new Audio("/success.mp3");
   const failure = new Audio("/failure.mp3");
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  // prevents question changing when user switches audio
+  // prevents question changing when rerendered for any reason but ++numQ
   const problem = useMemo<problemProps>(() => buildRandomProps(), [numQ]);
   const answer1 = useMemo<problemProps>(() => buildRandomProps(), [numQ]);
   const answer2 = invertRandomProps(answer1);
+  const isCorrect = problem.rand2 === answer1.rand1;
 
   // use wasRight data attribute with button focus
   // to flash success or failure
   // adds significant complexity
-  const checkAnswer = (e: any) => {
-    // prevent multiple clicks
-    if (hasBeenClicked.current) return;
-    hasBeenClicked.current = true;
+  // const checkAnswer = (e: any) => {
+  //   // prevent multiple clicks
+  //   if (hasBeenClicked.current) return;
+  //   hasBeenClicked.current = true;
 
-    const answerIndex = colorsText.findIndex((c) => c === e.target.innerText);
-    const wasCorrect = answerIndex === problem.rand2;
-    if (wasCorrect) {
-      dispatch(incrementScore());
-      isAudioOn && playAudio(success);
-      e.target.setAttribute("wasRight", 1);
-    } else {
-      isAudioOn && playAudio(failure);
-      e.target.setAttribute("wasRight", 0);
-    }
+  //   const answerIndex = colorsText.findIndex((c) => c === e.target.innerText);
+  //   const wasCorrect = answerIndex === problem.rand2;
+  //   if (wasCorrect) {
+  //     dispatch(incrementScore());
+  //     isAudioOn && playAudio(success);
+  //     e.target.setAttribute("wasRight", 1);
+  //   } else {
+  //     isAudioOn && playAudio(failure);
+  //     e.target.setAttribute("wasRight", 0);
+  //   }
 
-    setTimeout(() => {
-      // otherwise clicked button stuck on focus state
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-      setTimeout(() => {
-        setNumQ((prevVal) => ++prevVal);
-        hasBeenClicked.current = false;
-      }, 100);
-    }, 400);
-  };
+  //   setTimeout(() => {
+  //     // otherwise clicked button stuck on focus state
+  //     if (document.activeElement instanceof HTMLElement) {
+  //       document.activeElement.blur();
+  //     }
+  //     setTimeout(() => {
+  //       setNumQ((prevVal) => ++prevVal);
+  //       hasBeenClicked.current = false;
+  //     }, 100);
+  //   }, 400);
+  // };
 
   return (
     <div>
@@ -119,10 +91,26 @@ export default function DoubleTrouble() {
       <Row style={{ height: "10vh" }} />
       <Row align="top" justify="center" gutter={50} style={{ height: "45vh" }}>
         <Col>
-          <AnswerButton checkAnswer={checkAnswer} {...answer1} />
+          <AnswerButton
+            key={numQ}
+            isCorrect={isCorrect}
+            audio={isCorrect ? success : failure}
+            hasBeenClicked={hasBeenClicked}
+            // checkAnswer={checkAnswer}
+            setNumQ={setNumQ}
+            {...answer1}
+          />
         </Col>
         <Col>
-          <AnswerButton checkAnswer={checkAnswer} {...answer2} />
+          <AnswerButton
+            key={-numQ - 1}
+            isCorrect={!isCorrect}
+            audio={!isCorrect ? success : failure}
+            hasBeenClicked={hasBeenClicked}
+            // checkAnswer={checkAnswer}
+            setNumQ={setNumQ}
+            {...answer2}
+          />
         </Col>
       </Row>
     </div>

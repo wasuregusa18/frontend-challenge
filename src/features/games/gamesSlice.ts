@@ -36,7 +36,7 @@ type GamesState = EntityState<GameInfo> & {
 };
 
 const initialSettings: GameSettings = { audio: true };
-const makeNewGame = (id: string): CurrentGameState => ({
+export const makeNewGame = (id: string): CurrentGameState => ({
   id,
   gameStatus: "new",
   score: 0,
@@ -72,7 +72,7 @@ export const uploadScore = createAsyncThunk<
     dispatch: AppDispatch;
     state: RootState;
   }
->("games/uploadScore", async (_, { getState, dispatch }) => {
+>("games/uploadScore", async (_, { getState }) => {
   const state: RootState = getState();
   const user_id = state.user?.info?.id;
   const score = selectScore(state);
@@ -97,7 +97,7 @@ export const uploadScore = createAsyncThunk<
   }
 });
 
-const initialState: GamesState = gamesAdapter.getInitialState({
+export const initialState: GamesState = gamesAdapter.getInitialState({
   status: "new",
   error: undefined,
   settings: initialSettings,
@@ -134,12 +134,6 @@ export const gamesSlice = createSlice({
         state.currentGame.uploadStatus = "idle";
       }
     },
-    // failUpload: (state) => {
-    //   if (state.currentGame != null) {
-    //     state.currentGame.uploadStatus = "failed";
-    //     state.currentGame.error = "Game_id, User_id or Score is not valid";
-    //   }
-    // },
     toggleAudio: (state) => {
       state.settings.audio = !state.settings.audio;
     },

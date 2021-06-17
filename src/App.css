@@ -13,12 +13,3 @@ body {
   background: var(--bgcolor);
   color: white;
 }
-
-/* to center spin */
-.loading-container {
-  height: 100vh;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}

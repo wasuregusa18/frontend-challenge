@@ -35,6 +35,7 @@ export function GameSelector() {
         {games.length ? (
           games.map((game) => (
             <Col
+              key={game.id}
               style={{ textAlign: "center", paddingLeft: "0px" }}
               xl={6}
               md={8}
