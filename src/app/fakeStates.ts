@@ -31,10 +31,11 @@ const fakeNoCurrentGameState: RootState = {
     },
   },
   games: {
-    ids: ["Double Trouble"],
+    ids: ["double-trouble"],
     entities: {
-      "Double Trouble": {
+      "double-trouble": {
         id: "c77f35e3-d41c-446c-af63-80f430a962d0",
+        urlId: "double-trouble",
         name: "Double Trouble",
         intro_text:
           "See what color the top word is. Select that color from the two options below. DON’T pay attention to what the top word says or the color of the two options below. It’s important to match the color of the top word with the meaning of the word below.",
@@ -59,7 +60,7 @@ let fakeInitialState: RootState = JSON.parse(
   JSON.stringify(fakeNoCurrentGameState)
 );
 fakeInitialState.games.currentGame = {
-  id: "Double Trouble",
+  id: "double-trouble",
   gameStatus: "new",
   score: 0,
   timeLeft: 120,

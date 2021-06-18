@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectAudioSettings, toggleAudio } from "./gamesSlice";
+import React from "react";
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { toggleAudio } from "../gamesSlice";
+import { selectAudioSettings } from "../gamesSliceSelectors";
 import VolumeUpRoundedIcon from "@material-ui/icons/VolumeUpRounded";
 import VolumeOffRoundedIcon from "@material-ui/icons/VolumeOffRounded";
 import "./Audio.css";

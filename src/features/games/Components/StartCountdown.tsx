@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { startGame } from "./gamesSlice";
-import { useCountdown } from "./useCountdown";
+import { useAppDispatch } from "../../../app/hooks";
+import { startGame } from "../gamesSlice";
+import { useCountdown } from "../hooks/useCountdown";
 
 const countdownFrom = 3;
 

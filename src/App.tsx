@@ -8,8 +8,8 @@ import {
 } from "react-router-dom";
 import "./App.css";
 
-import { GameSelector } from "./features/games/GameSelector";
-import { Game } from "./features/games/Game";
+import { GameSelector } from "./features/games/Routes/GameSelector";
+import { Game } from "./features/games/Routes/Game";
 
 interface MatchParams {
   name: string;

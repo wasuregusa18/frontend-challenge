@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-
+import { baseUrlEndpoint } from "../../helper";
 export interface UserInfo {
   id: string | undefined;
   name: string | undefined;
@@ -20,17 +20,15 @@ const initialState: UserState = {
 
 // design decision
 // allow anoynomous users to play games
-// save their records under anoynomous id
+// however their scores will not be uploaded
 export const anoynomousUser: UserInfo = {
-  id: "anoynomous",
+  id: undefined,
   name: "Stranger",
   email: undefined,
 };
 
-const urlEndpoint =
-  "https://virtserver.swaggerhub.com/selfdecode.com/game-challenge/1.0.0/user/";
 export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
-  const response = await fetch(urlEndpoint);
+  const response = await fetch(baseUrlEndpoint + "user/");
   return (await response.json()) as UserInfo;
 });
 

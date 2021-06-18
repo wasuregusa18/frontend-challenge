@@ -4,13 +4,13 @@ import { Button } from "antd";
 
 import "./GameScore.css";
 
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { resetGame } from "../gamesSlice";
 import {
-  resetGame,
   selectCurrentGameEnd,
   selectCurrentGameStatus,
   selectScore,
-} from "./gamesSlice";
+} from "../gamesSliceSelectors";
 
 interface GameInfoProps {
   name: string;

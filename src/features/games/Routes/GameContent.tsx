@@ -1,15 +1,14 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import { Redirect } from "react-router-dom";
-
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectCurrentGameStatus, startGame, finishGame } from "./gamesSlice";
-import { GameFramework } from "./GameFramework";
-import { StartScreen } from "./StartScreen";
 import { Spin } from "antd";
+import { useAppSelector } from "../../../app/hooks";
+import { selectCurrentGameStatus } from "../gamesSliceSelectors";
+import { GameFramework } from "../Components/GameFramework";
+import { StartScreen } from "./StartScreen";
 import { Loading } from "./Loading";
 
 function renderGameEngine(name: string) {
-  return React.lazy(() => import("./GameEngines/" + name + "-engine"));
+  return React.lazy(() => import("../GameEngines/" + name + "-engine"));
 }
 interface GameContentProps {
   name: string;

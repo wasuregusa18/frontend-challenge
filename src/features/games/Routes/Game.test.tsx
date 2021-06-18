@@ -7,14 +7,14 @@ import {
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import { Game } from "./Game";
-import { RootState } from "../../app/store";
+import { RootState } from "../../../app/store";
 import configureMockStore, { MockStoreEnhanced } from "redux-mock-store";
 import thunk from "redux-thunk";
 import {
   fakeLoadingState,
   fakeNoCurrentGameState,
   fakeInitialState,
-} from "../../app/fakeStates";
+} from "../../../app/fakeStates";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore<RootState>(middlewares);

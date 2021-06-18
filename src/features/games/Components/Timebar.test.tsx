@@ -1,10 +1,10 @@
 import { render, RenderResult, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { Timebar } from "./Timebar";
-import { RootState } from "../../app/store";
+import { RootState } from "../../../app/store";
 import configureMockStore, { MockStoreEnhanced } from "redux-mock-store";
 import thunk from "redux-thunk";
-import { fakeInitialState, fakeStartedState } from "../../app/fakeStates";
+import { fakeInitialState, fakeStartedState } from "../../../app/fakeStates";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore<RootState>(middlewares);

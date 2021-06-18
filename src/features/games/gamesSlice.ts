@@ -1,42 +1,27 @@
 import {
-  createAsyncThunk,
   createSlice,
   createEntityAdapter,
-  EntityState,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { AppDispatch, RootState } from "../../app/store";
+import { fetchGames, uploadScore } from "./gamesAPI";
+import {
+  GameInfo,
+  GameSettings,
+  CurrentGameState,
+  GamesState,
+} from "./gameSlice.types";
+import { name2url } from "../../helper";
 
-interface GameInfo {
-  id: string;
-  name: string;
-  intro_text: string;
-  farewell_text: string;
-  time: 120;
-}
+export const gamesAdapter = createEntityAdapter<GameInfo>({
+  // using name based id so that can read currentGame from url
+  // see fetchGames.fulfilled
+  selectId: (game) => game.urlId,
+  // sort alphabetically
+  // could also compare by popularity or most recently used
+  sortComparer: (a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0),
+});
 
-interface GameSettings {
-  audio: boolean;
-}
-
-type gameStatus = "new" | "started" | "finished";
-
-interface CurrentGameState {
-  id: string; //note this is name not id
-  gameStatus: gameStatus;
-  timeLeft: number; //necessary with redux-persist; otherwise refresh sets time
-  score: number;
-  error: string | undefined;
-  uploadStatus: "idle" | "uploading" | "successful" | "failed";
-}
-
-type GamesState = EntityState<GameInfo> & {
-  status: "new" | "loading" | "failed" | "successful";
-  error: string | undefined;
-  settings: GameSettings;
-  currentGame?: CurrentGameState;
-};
-
+// inital state
 const initialSettings: GameSettings = { audio: true };
 export const makeNewGame = (id: string, time: number): CurrentGameState => ({
   id,
@@ -46,60 +31,6 @@ export const makeNewGame = (id: string, time: number): CurrentGameState => ({
   error: undefined,
   uploadStatus: "idle",
 });
-
-const gamesAdapter = createEntityAdapter<GameInfo>({
-  // using name as id tag - so that can set current game from url
-  // alternatively could use a lookup table - name2id
-  selectId: (game) => game.name,
-  // could also compare by popularity or most recently used
-  sortComparer: (a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0),
-});
-
-const baseUrlEndpoint =
-  "https://virtserver.swaggerhub.com/selfdecode.com/game-challenge/1.0.0/";
-export const fetchGames = createAsyncThunk("games/fetchGames", async () => {
-  const response = await fetch(baseUrlEndpoint + "game/");
-  return (await response.json()) as Array<GameInfo>;
-});
-
-interface scorePayload {
-  user_id: string;
-  score: number;
-  game_id: string;
-}
-type scoreEntry = scorePayload & { id: string };
-export const uploadScore = createAsyncThunk<
-  scoreEntry | undefined,
-  undefined,
-  {
-    dispatch: AppDispatch;
-    state: RootState;
-  }
->("games/uploadScore", async (_, { getState }) => {
-  const state: RootState = getState();
-  const user_id = state.user?.info?.id;
-  const score = selectScore(state);
-  const game_id = selectCurrentGameDatabaseID(state);
-
-  if (!(user_id && score && game_id)) {
-    throw new Error("Game_id, User_id or Score is not valid");
-  } else {
-    let payload: scorePayload = {
-      user_id,
-      score,
-      game_id,
-    };
-    const response = await fetch(baseUrlEndpoint + "score/", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    return (await response.json()) as scoreEntry;
-  }
-});
-
 export const initialState: GamesState = gamesAdapter.getInitialState({
   status: "new",
   error: undefined,
@@ -123,7 +54,6 @@ export const gamesSlice = createSlice({
         else state.currentGame.score = 1;
       }
     },
-    // dispatch this on timebar dismount
     updateTime: (state, action: PayloadAction<number>) => {
       if (state.currentGame != null) {
         state.currentGame.timeLeft = action.payload;
@@ -160,7 +90,12 @@ export const gamesSlice = createSlice({
       })
       .addCase(fetchGames.fulfilled, (state, action) => {
         state.status = "successful";
-        gamesAdapter.upsertMany(state, action.payload);
+        let processedGames = action.payload.map((game) => ({
+          urlId: name2url(game.name),
+          ...game,
+        }));
+        // gamesAdapter.removeAll(state); // when want to reset state
+        gamesAdapter.setAll(state, processedGames);
       })
       .addCase(fetchGames.rejected, (state, action) => {
         state.status = "failed";
@@ -192,52 +127,5 @@ export const {
   resetGame,
   toggleAudio,
 } = gamesSlice.actions;
-
-export const selectScore = (state: RootState): number | undefined =>
-  state.games.currentGame?.score;
-
-export const {
-  selectAll: selectAllGames,
-  selectById: selectGameById,
-  selectIds: selectGameIds,
-} = gamesAdapter.getSelectors((state: RootState) => state.games);
-
-export const selectCurrentGameInfo = (
-  state: RootState
-): GameInfo | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame);
-};
-
-export const selectCurrentGameDatabaseID = (
-  state: RootState
-): string | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.id;
-};
-
-export const selectCurrentGameIntro = (
-  state: RootState
-): string | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.intro_text;
-};
-
-export const selectCurrentGameEnd = (state: RootState): string | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.farewell_text;
-};
-
-export const selectCurrentGameStatus = (
-  state: RootState
-): gameStatus | undefined => state.games.currentGame?.gameStatus;
-
-export const selectAudioSettings = (state: RootState): boolean =>
-  state.games.settings.audio;
-
-export const selectCurrentGameTime = (state: RootState): number | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.time;
-};
 
 export default gamesSlice.reducer;

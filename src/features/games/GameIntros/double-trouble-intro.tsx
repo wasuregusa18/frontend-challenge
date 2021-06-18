@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../../app/hooks";
-import { incrementScore } from "../gamesSlice";
+import React from "react";
 import { Button, Col, Row } from "antd";
-import { Badge, Container } from "@material-ui/core";
+import { Badge } from "@material-ui/core";
 import "./double-trouble-intro.css";
 
 const BLUE = "rgb(0,116,255)";
@@ -63,7 +61,7 @@ export default function DoubleTrouble() {
               size="large"
               shape="round"
               className="example-button"
-              style={{ color: "red" }}
+              style={{ color: RED }}
             >
               BLUE
             </Button>

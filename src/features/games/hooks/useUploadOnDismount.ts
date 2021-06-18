@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../app/hooks";
-import { finishGame, uploadScore } from "../gamesSlice";
+import { finishGame } from "../gamesSlice";
+import { uploadScore } from "../gamesAPI";
 
 export function useUploadOnDismount() {
   let dispatch = useAppDispatch();

@@ -8,3 +8,9 @@ export const playAudio = (audio: HTMLAudioElement) => {
       });
   }
 };
+
+export const name2url = (name: string): string =>
+  name.replace(/ /gi, "-").toLowerCase();
+
+export const baseUrlEndpoint =
+  "https://virtserver.swaggerhub.com/selfdecode.com/game-challenge/1.0.0/";

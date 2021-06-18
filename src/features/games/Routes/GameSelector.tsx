@@ -1,14 +1,11 @@
 import React from "react";
-import { useAppSelector } from "../../app/hooks";
-import { selectAllGames } from "./gamesSlice";
-import { selectUser } from "../user/userSlice";
+import { useAppSelector } from "../../../app/hooks";
+import { selectAllGames } from "../gamesSliceSelectors";
+import { selectUser } from "../../user/userSlice";
 import { Link } from "react-router-dom";
 import { Button, Row, Col, Spin, Divider } from "antd";
 import "./GameSelector.css";
-import { useTitle } from "./useTitle";
-
-const name2url = (name: string): string =>
-  name.replace(/ /gi, "-").toLowerCase();
+import { useTitle } from "../hooks/useTitle";
 
 export function GameSelector() {
   const { status, info: userInfo } = useAppSelector(selectUser);
@@ -35,7 +32,7 @@ export function GameSelector() {
               lg={8}
               xs={12}
             >
-              <Link to={`game/${name2url(game.name)}/`}>
+              <Link to={`game/${game.urlId}/`}>
                 <Button shape="round" size="large" className="game-button">
                   {game.name}
                 </Button>

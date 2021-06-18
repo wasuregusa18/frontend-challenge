@@ -1,31 +1,14 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch,
-  Redirect,
-} from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import {
-  selectGameById,
-  setCurrentGame,
-  selectCurrentGameInfo,
-} from "./gamesSlice";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { setCurrentGame } from "../gamesSlice";
+import { selectGameById, selectCurrentGameInfo } from "../gamesSliceSelectors";
 import { GameContent } from "./GameContent";
 import { GameIntro } from "./GameIntro";
 import { GameScore } from "./GameScore";
-import { RootState } from "../../app/store";
+import { RootState } from "../../../app/store";
 import { Loading } from "./Loading";
-import { useTitle } from "./useTitle";
-
-// adds some unncessary complexity
-// brittle - assumes game names capitalized (could make lower before adding to store)
-// but allows users to navigate to game by url
-const url2name = (url: string): string =>
-  url.replace(/-/gi, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+import { useTitle } from "../hooks/useTitle";
 
 interface GameProps {
   name: string;
@@ -33,17 +16,17 @@ interface GameProps {
 
 export function Game({ name }: GameProps) {
   const dispatch = useAppDispatch();
-  const gameId = url2name(name);
   const gamesStatus = useAppSelector((state: RootState) => state.games.status);
   const currentGameinStore = useAppSelector(selectCurrentGameInfo);
   const currentGamefromUrl = useAppSelector((state: RootState) =>
-    selectGameById(state, gameId)
+    selectGameById(state, name)
   );
-  useTitle(gameId);
+  let title = currentGamefromUrl ? currentGamefromUrl.name : "Game Not Found";
+  useTitle(title);
   if (gamesStatus === "loading") return <Loading />;
   else if (!currentGamefromUrl) return <Redirect to="/" />;
   else if (currentGamefromUrl !== currentGameinStore) {
-    dispatch(setCurrentGame(gameId));
+    dispatch(setCurrentGame(name));
   }
 
   return (

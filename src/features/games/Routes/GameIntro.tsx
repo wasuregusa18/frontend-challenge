@@ -1,14 +1,15 @@
 import React, { Suspense } from "react";
 import { Link } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectCurrentGameIntro, resetGame } from "./gamesSlice";
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { resetGame } from "../gamesSlice";
+import { selectCurrentGameIntro } from "../gamesSliceSelectors";
 import { Button, Spin } from "antd";
 import { Container } from "@material-ui/core";
 import "./GameIntro.css";
 
 function renderGameIntro(name: string) {
-  return React.lazy(() => import("./GameIntros/" + name + "-intro"));
+  return React.lazy(() => import("../GameIntros/" + name + "-intro"));
 }
 interface GameInfoProps {
   name: string;

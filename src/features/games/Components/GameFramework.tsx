@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectCurrentGameStatus, startGame, finishGame } from "./gamesSlice";
+import React from "react";
 import { Row, Col } from "antd";
 
 import { Timebar } from "./Timebar";

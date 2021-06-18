@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { IconButton } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
-import { useAppSelector } from "../../app/hooks";
-import { selectAudioSettings } from "./gamesSlice";
-import { playAudio } from "./helper";
-import { StartCountdown } from "./StartCountdown";
+import { useAppSelector } from "../../../app/hooks";
+import { selectAudioSettings } from "../gamesSliceSelectors";
+import { playAudio } from "../../../helper";
+import { StartCountdown } from "../Components/StartCountdown";
 import "./StartScreen.css";
 
 // startcountdown dispatches the start game when countdown finishes

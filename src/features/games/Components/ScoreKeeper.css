@@ -9,12 +9,10 @@
   color: var(--textcolor);
   font-size: small;
   width: 100%;
-  /* flex-basis: 100%; */
 }
 
 .score-number {
   color: white;
   font-size: large;
   font-weight: bold;
-  /* flex-basis: 100%; */
 }

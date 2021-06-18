@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { useCallback } from "react";
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { finishGame, updateTime } from "../gamesSlice";
 import {
   selectCurrentGameStatus,
-  finishGame,
-  updateTime,
   selectCurrentGameTime,
-} from "./gamesSlice";
-import { useCountdown } from "./useCountdown";
+} from "../gamesSliceSelectors";
+import { useCountdown } from "../hooks/useCountdown";
 import { Progress } from "antd";
 import "./Timebar.css";
-import { RootState } from "../../app/store";
+import { RootState } from "../../../app/store";
 
 export function Timebar() {
   // force unpack - because current Game should be set
@@ -18,18 +17,18 @@ export function Timebar() {
   let storeTimeLeft = useAppSelector(
     (store: RootState) => store.games.currentGame?.timeLeft
   )!;
-  // gameTimeLimit = 10;
   let dispatch = useAppDispatch();
 
   const normalise = (value: number): number => (value * 100) / gameTimeLimit;
 
-  // GameEngineWrapper handles upload
+  // useUploadOnDismount handles upload
   const onFinish = useCallback(() => {
     dispatch(finishGame());
   }, [dispatch]);
   const startCondition = gameStatus === "started";
 
-  // update store on dismount
+  // update store every tick
+  // this way store keeps complete state
   const onTick = useCallback(
     (remainingTime) => {
       dispatch(updateTime(remainingTime));

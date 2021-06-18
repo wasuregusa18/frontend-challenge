@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { selectScore } from "./gamesSlice";
+import React from "react";
+import { useAppSelector } from "../../../app/hooks";
+import { selectScore } from "../gamesSliceSelectors";
 import "./ScoreKeeper.css";
 
 export function ScoreKeeper() {
-  let currentScore = useAppSelector(selectScore);
+  let currentScore = useAppSelector(selectScore)!;
 
   return (
     <div className="score-container">

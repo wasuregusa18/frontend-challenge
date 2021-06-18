@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-interface countdownParams {
-  onFinish(): never;
-  start?: number;
-  finish: number;
-  timePerStep?: number;
-  startCondition?: boolean | undefined;
-  onTick: onTick;
-}
+// interface countdownParams {
+//   onFinish(): never;
+//   start?: number;
+//   finish: number;
+//   timePerStep?: number;
+//   startCondition?: boolean | undefined;
+//   onTick: onTick;
+// }
 type onTick = undefined | ((remainingTime: number) => void);
 
 export function useCountdown(

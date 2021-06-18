@@ -2,15 +2,34 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "antd";
 import ClearIcon from "@material-ui/icons/Clear";
 import CheckIcon from "@material-ui/icons/Check";
-import { playAudio } from "../helper";
+import { playAudio } from "../../../helper";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
-import { incrementScore, selectAudioSettings } from "../gamesSlice";
-const delay = 300;
+import { incrementScore } from "../gamesSlice";
+import { selectAudioSettings } from "../gamesSliceSelectors";
+
+const BLUE = "rgb(0,116,255)";
+const RED = "rgb(255,0,0)";
+const colorsText = ["BLUE", "RED"];
+const colorsRGB = [BLUE, RED];
+
+const random2colors = ({ rand1, rand2 }: problemProps) => [
+  colorsText[rand1],
+  colorsRGB[rand2],
+];
 
 export interface problemProps {
   rand1: 0 | 1;
   rand2: 0 | 1;
 }
+
+export const Problem = ({ rand1, rand2 }: problemProps) => {
+  const [text, color] = random2colors({ rand1, rand2 });
+  return (
+    <p className="problem-text" style={{ color: color }}>
+      {text}
+    </p>
+  );
+};
 
 type answerProps = problemProps & {
   // checkAnswer: (e: any) => void;
@@ -20,15 +39,8 @@ type answerProps = problemProps & {
   hasBeenClicked: React.MutableRefObject<boolean>;
 };
 
-const BLUE = "rgb(0,116,255)";
-const RED = "rgb(255,0,0)";
-const colorsText = ["BLUE", "RED"];
-const colorsRGB = [BLUE, RED];
-
-export const random2colors = ({ rand1, rand2 }: problemProps) => [
-  colorsText[rand1],
-  colorsRGB[rand2],
-];
+// set delay higher to prevent continuous clicking being optimium strategy
+const delay = 300;
 
 export const AnswerButton = ({
   rand1,
