@@ -43,6 +43,6 @@ test(" Timebar finishes game", () => {
   let store = mockStore(fakeStartedState);
   renderTimebar(store);
   jest.advanceTimersByTime(1000 * 130);
-  let [action] = store.getActions();
-  expect(action.type).toEqual("games/finishGame");
+  let actions = store.getActions();
+  expect(actions.find((a) => a.type === "games/finishGame")).toBeTruthy();
 });

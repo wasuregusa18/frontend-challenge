@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Col, Row } from "antd";
 import "./double-trouble-engine.css";
-import { useUploadOnDismount } from "../hooks/useUploadOnDismount";
+// import { useUploadOnDismount } from "../hooks/useUploadOnDismount";
 import { AnswerButton, Problem, problemProps } from "./AnswerButton";
 
 const randOneorTwo = () => (Math.random() >= 0.5 ? 1 : 0);
@@ -15,7 +15,8 @@ const invertRandomProps = ({ rand1, rand2 }: problemProps): problemProps => ({
 });
 
 export default function DoubleTrouble() {
-  useUploadOnDismount();
+  // useUploadOnDismount(); //for PWA only upload on timer finish
+
   // here I use to force rerender
   // but useful to give accuracy stat also
   const [numQ, setNumQ] = useState(0);

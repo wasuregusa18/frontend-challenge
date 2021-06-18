@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { Progress } from "antd";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { finishGame, updateTime } from "../gamesSlice";
 import {
@@ -6,9 +7,9 @@ import {
   selectCurrentGameTime,
 } from "../gamesSliceSelectors";
 import { useCountdown } from "../hooks/useCountdown";
-import { Progress } from "antd";
-import "./Timebar.css";
 import { RootState } from "../../../app/store";
+import { uploadScore } from "../gamesAPI";
+import "./Timebar.css";
 
 export function Timebar() {
   // force unpack - because current Game should be set
@@ -24,6 +25,7 @@ export function Timebar() {
   // useUploadOnDismount handles upload
   const onFinish = useCallback(() => {
     dispatch(finishGame());
+    dispatch(uploadScore());
   }, [dispatch]);
   const startCondition = gameStatus === "started";
 

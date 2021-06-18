@@ -1,47 +1,68 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# Frontend Challenge
 
-“Sound effects obtained from https://www.zapsplat.com“
-“Sound effects from https://quicksounds.com“
+Live application
 
-## Available Scripts
+<https://decode-frontend-challenge.netlify.app/>
 
-In the project directory, you can run:
+Specifications
 
-### `yarn start`
+<https://docs.google.com/document/d/1rG455VStu0ThZDWuZBiy_5N3k7rHkFuUTiikiilLHXo/edit>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Target UI Design
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+<https://xd.adobe.com/view/9a1507ed-d228-4c27-43cc-2ef6c4c5239b-ec24/>
 
-### `yarn test`
+## Design Decisions
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Each game bound to unique, readable url
 
-### `yarn build`
+#### Design
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Users should be able to bookmark their favourite games and navigate to them directly without having to go through the game selector menu.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+#### Implementation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Games are accessed via a urlId (their name toLowercase and with spaces replaced by dashes "Double Trouble" => "double-trouble"). This allows Game component to read and set current game from url.
 
-### `yarn eject`
+### Games should work offline
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Design
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Gameplay itself involves no API call (only to upload score upon finish). This makes it a suitable canditate for progressive web app. Users should be able to download the web app onto their phones and play offline. Refreshing the page should preserve state (i.e. 50 seconds left on refresh - still 50 seconds left after)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### Implementation
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Create-react-app's service worker is registered and redux state is persisted by redux-persist. Time left is stored in store and updated every tick (see earlier commits for non PWA version).
 
-## Learn More
+### Lazy loading of game engines/intros
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Design
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+A user going directly to bookmarked favourite game should not have to wait while browser loads all of the game engines files (potentially very big file). Instead, the app should load only the files it needs when it needs them.
+
+#### Implementation
+
+React.lazy loads only the required game engine when rendered (code-splitting). Currently, it loads it upon render, but in production I would add react-lazy-with-preload and preload the game engine on the start page.
+
+## Other Details
+
+### 3rd party UI frameworks
+
+To accelerate building the UI, I used components from both Material UI and Ant Design. Most of these were for responsive grids (Material UI's container, Antd's Row and Col). Webpack's tree shaking should eliminate most unnecessary code, but there is probably still some bloat.
+
+### Testing
+
+I implemented some sample tests (mock fetch, mock timer, mock store, etc...) to demonstrate proficiency, but coverage is pretty low. In reality, I would be writing many more tests.
+
+### Additions
+
+I followed the specified UI, but left to design the UI myself, I would have added several elements:
+
+1. Feedback on whether score was uploaded (also ability to try upload again)
+2. Ability to exit game in the middle
+3. Choice of going to score from intro page if game already played (currently clicking "I understand" just resets game).
+
+### Credits
+
+Sound effects from <https://www.zapsplat.com> and <https://quicksounds.com>
+Favicon Image made by Google

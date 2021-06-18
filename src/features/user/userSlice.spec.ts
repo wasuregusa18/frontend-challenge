@@ -2,14 +2,7 @@ import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import expect from "expect";
 
-import userReducer, {
-  UserState,
-  fetchUser,
-  selectUser,
-  selectUserID,
-  UserInfo,
-  anoynomousUser,
-} from "./userSlice";
+import { UserState, fetchUser, UserInfo } from "./userSlice";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -19,10 +12,6 @@ describe("user reducer", () => {
     status: "new",
     error: null,
   };
-
-  it("should handle initial state", () => {
-    expect(userReducer(undefined, { type: "unknown" })).toEqual(initialState);
-  });
 
   it("should handle fetch", async () => {
     const fakeUser: UserInfo = {

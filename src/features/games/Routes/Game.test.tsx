@@ -52,7 +52,7 @@ test("Set Current Game", () => {
   renderGame(store);
   let [action] = store.getActions();
   expect(action.type).toEqual("games/setCurrentGame");
-  expect(action.payload).toEqual("Double Trouble");
+  expect(action.payload).toEqual("double-trouble");
 });
 
 test("Correctly Routes", () => {

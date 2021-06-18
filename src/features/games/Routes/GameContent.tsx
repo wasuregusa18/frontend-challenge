@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { Redirect } from "react-router-dom";
-import { Spin } from "antd";
 import { useAppSelector } from "../../../app/hooks";
 import { selectCurrentGameStatus } from "../gamesSliceSelectors";
 import { GameFramework } from "../Components/GameFramework";
@@ -35,7 +34,7 @@ export function GameContent({ name }: GameContentProps) {
         </>
       ) : (
         <>
-          <Suspense fallback={<Spin />}>
+          <Suspense fallback={<Loading />}>
             <GameEngine />
           </Suspense>
         </>

@@ -1,53 +1,73 @@
-import { store } from "../../app/store";
+import reducer, { initialState } from "./gamesSlice";
 import {
-  incrementScore,
-  makeNewGame,
-  setCurrentGame,
-  finishGame,
-} from "./gamesSlice";
+  fakeInitialState,
+  fakeNoCurrentGameState,
+  fakeStartedState,
+} from "../../app/fakeStates";
 
-// just test some reducers here
+// just test reducer
 // see userSlice.spec.ts for async test
 
-test("setCurrentGame test", () => {
-  let state = store.getState().games;
-  const currentGame = state?.currentGame;
-  expect(currentGame).toBeFalsy(); //starts undefined
+describe("games reducer", () => {
+  it("should return the initial state", () => {
+    expect(reducer(undefined, { type: undefined })).toEqual(initialState);
+  });
 
-  const newGame = makeNewGame("1", 120);
-  store.dispatch(setCurrentGame("1"));
-  state = store.getState().games;
-  const newCurrentGame = state?.currentGame;
-  expect(newCurrentGame).toEqual(newGame);
-});
+  it("should handle setCurrentGame", () => {
+    expect(
+      reducer(fakeNoCurrentGameState.games, {
+        type: "games/setCurrentGame",
+        payload: "double-trouble",
+      })
+    ).toEqual(fakeInitialState.games);
+  });
 
-test("incrementScore test", () => {
-  let state = store.getState().games;
-  const originalScore = state?.currentGame?.score;
-  expect(originalScore).toBeFalsy(); //starts undefined
+  it("should handle incrementScore", () => {
+    expect(
+      reducer(fakeInitialState.games, {
+        type: "games/incrementScore",
+      })?.currentGame?.score
+    ).toEqual(1);
+  });
 
-  store.dispatch(setCurrentGame("1"));
-  state = store.getState().games;
-  const initalizedScore = state?.currentGame?.score;
-  expect(initalizedScore).toEqual(0);
+  it("should handle updateTime", () => {
+    expect(
+      reducer(fakeInitialState.games, {
+        type: "games/updateTime",
+        payload: 54,
+      })?.currentGame?.timeLeft
+    ).toEqual(54);
+  });
 
-  store.dispatch(incrementScore());
-  state = store.getState().games;
-  let incrementedScore = state?.currentGame?.score;
-  expect(incrementedScore).toEqual(1);
-});
+  it("should handle startGame", () => {
+    expect(
+      reducer(fakeInitialState.games, {
+        type: "games/startGame",
+      })?.currentGame?.gameStatus
+    ).toEqual("started");
+  });
 
-test("finishGame test", () => {
-  let state = store.getState().games;
-  //   const originalStatus = state?.currentGame?.gameStatus;
-  //   expect(originalStatus).toBeFalsy(); //starts undefined
+  it("should handle finishGame", () => {
+    expect(
+      reducer(fakeInitialState.games, {
+        type: "games/finishGame",
+      })?.currentGame?.gameStatus
+    ).toEqual("finished");
+  });
 
-  store.dispatch(setCurrentGame("1"));
-  const initalizedStatus = state?.currentGame?.gameStatus;
-  expect(initalizedStatus).toEqual("new");
+  it("should handle resetGame", () => {
+    expect(
+      reducer(fakeStartedState.games, {
+        type: "games/resetGame",
+      })
+    ).toEqual(fakeInitialState.games);
+  });
 
-  store.dispatch(finishGame());
-  state = store.getState().games;
-  const finishedStatus = state?.currentGame?.gameStatus;
-  expect(finishedStatus).toEqual("finished");
+  it("should handle toggleAudio", () => {
+    expect(
+      reducer(fakeInitialState.games, {
+        type: "games/toggleAudio",
+      }).settings.audio
+    ).toEqual(false);
+  });
 });

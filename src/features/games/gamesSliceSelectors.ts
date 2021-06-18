@@ -1,5 +1,5 @@
 import { RootState } from "../../app/store";
-import { GameInfo } from "./gameSlice.types";
+import { GameInfo } from "./gamesSlice.types";
 import { gamesAdapter } from "./gamesSlice";
 
 export const {
@@ -16,13 +16,6 @@ export const selectCurrentGameInfo = (
 ): GameInfo | undefined => {
   let currentGame = state.games.currentGame?.id;
   if (currentGame) return selectGameById(state, currentGame);
-};
-
-export const selectCurrentGameDatabaseID = (
-  state: RootState
-): string | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.id;
 };
 
 export const selectCurrentGameIntro = (

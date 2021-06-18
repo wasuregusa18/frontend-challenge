@@ -1,18 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../app/store";
-import { GameInfo } from "./gameSlice.types";
+import { GameInfo } from "./gamesSlice.types";
 import { baseUrlEndpoint } from "../../helper";
-import {
-  selectScore,
-  selectCurrentGameDatabaseID,
-} from "./gamesSliceSelectors";
+
+// fetching games
 
 type APIGameInfo = Omit<GameInfo, "urlId">;
-
 export const fetchGames = createAsyncThunk("games/fetchGames", async () => {
   const response = await fetch(baseUrlEndpoint + "game/");
   return (await response.json()) as Array<APIGameInfo>;
 });
+
+// uploading score
+
+const selectCurrentGameDatabaseID = (state: RootState): string | undefined => {
+  let currentGame = state.games.currentGame?.id;
+  if (currentGame && currentGame in state.games.entities)
+    return state.games.entities[currentGame]?.id;
+};
 interface scorePayload {
   user_id: string;
   score: number;
@@ -29,7 +34,7 @@ export const uploadScore = createAsyncThunk<
 >("games/uploadScore", async (_, { getState }) => {
   const state: RootState = getState();
   const user_id = state.user?.info?.id;
-  const score = selectScore(state);
+  const score = state.games.currentGame?.score;
   const game_id = selectCurrentGameDatabaseID(state);
 
   if (!(user_id && game_id && typeof score === "number")) {

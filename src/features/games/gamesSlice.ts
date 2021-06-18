@@ -9,7 +9,7 @@ import {
   GameSettings,
   CurrentGameState,
   GamesState,
-} from "./gameSlice.types";
+} from "./gamesSlice.types";
 import { name2url } from "../../helper";
 
 export const gamesAdapter = createEntityAdapter<GameInfo>({
