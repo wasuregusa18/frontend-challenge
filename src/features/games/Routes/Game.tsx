@@ -38,7 +38,7 @@ export function Game({ name }: GameProps) {
         <GameContent name={name} />
       </Route>
       <Route path={`/game/${name}/score`}>
-        <GameScore name={name} />
+        <GameScore />
       </Route>
       <Route>
         <Redirect to={`/game/${name}/intro`} />

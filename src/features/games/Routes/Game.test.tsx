@@ -28,7 +28,7 @@ const renderGame = (
       <MemoryRouter>
         <Game name={name} />
         <Route>
-          <div>Home</div>
+          <div>Bad Name</div>
         </Route>
       </MemoryRouter>
     </Provider>
@@ -44,7 +44,7 @@ test("Loading Game shows Loading Page", () => {
 test("Redirect to GameSelector on bad name", () => {
   let store = mockStore(fakeInitialState);
   renderGame(store, "fake-name");
-  expect(screen.getByText("Home")).toBeInTheDocument();
+  expect(screen.getByText("Bad Name")).toBeInTheDocument();
 });
 
 test("Set Current Game", () => {

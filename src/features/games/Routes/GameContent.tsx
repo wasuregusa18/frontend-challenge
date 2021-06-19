@@ -19,7 +19,7 @@ export function GameContent({ name }: GameContentProps) {
   // currentGame not set
   if (!gameStatus) return <Loading />;
   // currentGame finished
-  if (gameStatus === "finished") return <Redirect to={`/game/${name}/score`} />;
+  if (gameStatus === "finished") return <Redirect to="score" />;
 
   // lazy load game only when needed
   // ideally would combine with react-lazy-with-preload

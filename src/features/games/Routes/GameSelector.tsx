@@ -1,11 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Button, Row, Col, Spin, Divider } from "antd";
 import { useAppSelector } from "../../../app/hooks";
 import { selectAllGames } from "../gamesSliceSelectors";
 import { selectUser } from "../../user/userSlice";
-import { Link } from "react-router-dom";
-import { Button, Row, Col, Spin, Divider } from "antd";
-import "./GameSelector.css";
 import { useTitle } from "../hooks/useTitle";
+import "./GameSelector.css";
 
 export function GameSelector() {
   const { status, info: userInfo } = useAppSelector(selectUser);

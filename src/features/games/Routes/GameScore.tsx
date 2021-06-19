@@ -1,9 +1,6 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Button } from "antd";
-
-import "./GameScore.css";
-
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { resetGame } from "../gamesSlice";
 import {
@@ -11,12 +8,9 @@ import {
   selectCurrentGameStatus,
   selectScore,
 } from "../gamesSliceSelectors";
+import "./GameScore.css";
 
-interface GameInfoProps {
-  name: string;
-}
-
-export function GameScore({ name }: GameInfoProps) {
+export function GameScore() {
   let endText = useAppSelector(selectCurrentGameEnd);
   let score = useAppSelector(selectScore);
   let gameStatus = useAppSelector(selectCurrentGameStatus);
@@ -33,7 +27,7 @@ export function GameScore({ name }: GameInfoProps) {
       <p className="end-text">{endText}</p>
       <br />
       <div className="links-container">
-        <Link to="/" onClick={() => dispatch(resetGame())}>
+        <Link to="/">
           <Button className="end-link" shape="round">
             Home
           </Button>

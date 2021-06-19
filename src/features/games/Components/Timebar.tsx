@@ -22,7 +22,6 @@ export function Timebar() {
 
   const normalise = (value: number): number => (value * 100) / gameTimeLimit;
 
-  // useUploadOnDismount handles upload
   const onFinish = useCallback(() => {
     dispatch(finishGame());
     dispatch(uploadScore());

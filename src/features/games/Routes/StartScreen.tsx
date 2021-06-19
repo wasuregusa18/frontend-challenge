@@ -37,7 +37,7 @@ export function StartScreen() {
         className={!isStarting ? "start-button" : "start-countdown"}
       >
         {!isStarting ? (
-          <PlayArrowIcon className="start-icon" />
+          <PlayArrowIcon className="start-icon" aria-label="Start Countdown" />
         ) : (
           <StartCountdown isStarting={isStarting} />
         )}

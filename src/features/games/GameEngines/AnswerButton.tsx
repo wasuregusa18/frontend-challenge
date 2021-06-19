@@ -32,7 +32,6 @@ export const Problem = ({ rand1, rand2 }: problemProps) => {
 };
 
 type answerProps = problemProps & {
-  // checkAnswer: (e: any) => void;
   setNumQ: React.Dispatch<React.SetStateAction<number>>;
   isCorrect: boolean;
   audio: HTMLAudioElement;

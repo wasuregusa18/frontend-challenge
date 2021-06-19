@@ -50,6 +50,10 @@ React.lazy loads only the required game engine when rendered (code-splitting). C
 
 To accelerate building the UI, I used components from both Material UI and Ant Design. Most of these were for responsive grids (Material UI's container, Antd's Row and Col). Webpack's tree shaking should eliminate most unnecessary code, but there is probably still some bloat.
 
+### Styling
+
+I used css with unique class names (because css is merged on default). This probably leads to some repetiton. For a larger, long term project, I would probably use styled components or Material UI makeStyles();
+
 ### Testing
 
 I implemented some sample tests (mock fetch, mock timer, mock store, etc...) to demonstrate proficiency, but coverage is pretty low. In reality, I would be writing many more tests.

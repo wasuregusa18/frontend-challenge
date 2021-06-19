@@ -21,13 +21,11 @@ export const selectCurrentGameInfo = (
 export const selectCurrentGameIntro = (
   state: RootState
 ): string | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.intro_text;
+  return selectCurrentGameInfo(state)?.intro_text;
 };
 
 export const selectCurrentGameEnd = (state: RootState): string | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.farewell_text;
+  return selectCurrentGameInfo(state)?.farewell_text;
 };
 
 export const selectCurrentGameStatus = (state: RootState) =>
@@ -37,6 +35,5 @@ export const selectAudioSettings = (state: RootState) =>
   state.games.settings.audio;
 
 export const selectCurrentGameTime = (state: RootState): number | undefined => {
-  let currentGame = state.games.currentGame?.id;
-  if (currentGame) return selectGameById(state, currentGame)?.time;
+  return selectCurrentGameInfo(state)?.time;
 };
