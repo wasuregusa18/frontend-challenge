@@ -5,7 +5,7 @@ import App from "./App";
 import { store, persistor } from "./app/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { fetchGames } from "./features/games/gamesAPI";
 import { fetchUser } from "./features/user/userSlice";
 import { Loading } from "./features/games/Routes/Loading";
@@ -24,4 +24,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-serviceWorker.register();
+serviceWorkerRegistration.register();
