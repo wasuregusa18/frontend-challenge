@@ -4,10 +4,6 @@ Live application
 
 <https://decode-frontend-challenge.netlify.app/>
 
-Specifications
-
-<https://docs.google.com/document/d/1rG455VStu0ThZDWuZBiy_5N3k7rHkFuUTiikiilLHXo/edit>
-
 Target UI Design
 
 <https://xd.adobe.com/view/9a1507ed-d228-4c27-43cc-2ef6c4c5239b-ec24/>
